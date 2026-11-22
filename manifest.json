@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "行人的法槌",
+  "version": "0.4.0",
+  "description": "桃園市交通違規檢舉表單填寫輔助工具，可自行設定儲存於本機的加密預填欄位，並依影片資料協助填入表單",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": ["storage", "alarms"],
+  "host_permissions": ["https://tvrweb.typd.gov.tw:3444/TTPB/*"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://tvrweb.typd.gov.tw:3444/TTPB/*"],
+      "js": ["lib/mp4-time.js", "lib/plate-ranges.js", "content/panel.js", "content/d0101.js",
+             "content/d0102-presets.js", "content/d0102.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://tvrweb.typd.gov.tw:3444/TTPB/*"],
+      "js": ["content/main-world.js"],
+      "world": "MAIN",
+      "run_at": "document_idle"
+    }
+  ]
+}

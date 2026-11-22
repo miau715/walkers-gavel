@@ -1,0 +1,58 @@
+/* 配色與設定頁、面板一致：柏油色的頁首、斑馬線條紋、行人專用標誌的藍 */
+/* 固定用深色（不跟隨系統的淺色／深色設定），與檢舉頁的面板一致 */
+:root {
+  --fg: #e7eaec;
+  --muted: #9aa3ab;
+  --bg: #1b1e21;
+  --border: #3b4147;
+  --accent: #8a6a3c;
+  --focus: #b5905b;
+  --on-accent: #ffffff;
+  --danger: #ff8073;
+  --road: #0f1113;
+  --stripe: #f4f4f0;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--fg); }
+/* 字級：一般文字 16px、小字 14px，不使用更小的字 */
+body { font: 16px/1.5 -apple-system, "PingFang TC", "Noto Sans TC", sans-serif; }
+.top {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 16px; background: var(--road); color: #fff;
+}
+/* 標誌：icons/icon.svg */
+.logo { flex: none; display: block; width: 16px; height: 16px; }
+h1 { font-size: 16px; font-weight: 600; letter-spacing: .04em; margin: 0; }
+main { padding: 10px 16px 14px; }
+label { display: block; color: var(--muted); font-size: 14px; margin-bottom: 3px; }
+input {
+  display: block;
+  width: 100%;
+  padding: 6px 10px;
+  margin-bottom: 10px;
+  font: inherit;
+  font-size: 16px;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+input:focus { outline: 2px solid var(--focus); outline-offset: -1px; border-color: transparent; }
+.row { display: flex; align-items: center; gap: 12px; }
+button {
+  font: inherit;
+  font-weight: 500;
+  min-height: 32px;
+  padding: 4px 18px;
+  border-radius: 6px;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
+  cursor: pointer;
+}
+button:hover { filter: brightness(1.08); }
+button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+button:disabled { opacity: .5; cursor: wait; }
+.note { font-size: 14px; font-weight: 500; color: var(--danger); }
+.note:not(:empty)::before { content: "✕ "; }

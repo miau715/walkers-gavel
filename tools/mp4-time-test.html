@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>影片時間測試</title>
+<style>
+  body { font-family: -apple-system, "PingFang TC", sans-serif; margin: 24px; color: #222; background: #fff; }
+  table { border-collapse: collapse; margin-top: 16px; }
+  th, td { border: 1px solid #ccc; padding: 6px 12px; text-align: left; }
+  th { background: #f4f4f4; font-weight: 600; }
+  td { font-family: ui-monospace, Menlo, monospace; }
+  .err { color: #c00; }
+</style>
+</head>
+<body>
+<h1>影片拍攝時間測試</h1>
+<p>選擇影片（可多選）。檔案只在本機讀取，不會上傳。</p>
+<input type="file" id="pick" accept=".mov,.mp4,video/quicktime,video/mp4" multiple>
+<table>
+  <thead><tr><th>檔名</th><th>時間來源</th><th>原始值</th><th>台灣時間（Asia/Taipei）</th></tr></thead>
+  <tbody id="out"></tbody>
+</table>
+<script src="../lib/mp4-time.js"></script>
+<script>
+  const out = document.getElementById('out');
+  document.getElementById('pick').addEventListener('change', async (ev) => {
+    for (const file of ev.target.files) {
+      const tr = document.createElement('tr');
+      const cells = [file.name];
+      const r = await Mp4Time.readVideoStartTime(file);
+      if (r.ok) {
+        const t = Mp4Time.toTaipeiParts(r.date);
+        cells.push(r.source, String(r.raw), `${t.date} ${t.time}:${t.second}`);
+      } else {
+        cells.push('讀不到', '', r.reason);
+        tr.className = 'err';
+      }
+      for (const c of cells) {
+        const td = document.createElement('td');
+        td.textContent = c;
+        tr.appendChild(td);
+      }
+      out.appendChild(tr);
+    }
+    ev.target.value = '';
+  });
+</script>
+</body>
+</html>

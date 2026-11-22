@@ -1,0 +1,150 @@
+/* 配色取自路面：柏油色的頁首、斑馬線條紋、行人專用標誌的藍、號誌的紅綠 */
+/* 固定用深色（不跟隨系統的淺色／深色設定），與檢舉頁的面板一致 */
+:root {
+  --fg: #e7eaec;
+  --muted: #9aa3ab;
+  --bg: #1b1e21;
+  --surface: #262a2e;
+  --border: #3b4147;
+  --accent: #8a6a3c;
+  --focus: #b5905b;
+  --on-accent: #ffffff;
+  --danger: #ff8073;
+  --ok: #62d394;
+  --warn: #e6b450;
+  --road: #0f1113;
+  --stripe: #f4f4f0;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  /* 字級：一律 16px（小字 14px 只用在檢舉頁面板的資訊區，選項頁不使用）；標題可以更大 */
+  font: 16px/1.65 -apple-system, "PingFang TC", "Noto Sans TC", sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 頁首 */
+.top { background: var(--road); color: #fff; }
+.top-in {
+  max-width: 600px; margin: 0 auto; padding: 18px 20px;
+  display: flex; align-items: center; gap: 14px;
+}
+/* 標誌：icons/icon.svg */
+.logo { flex: none; display: block; width: 16px; height: 16px; }
+h1 { font-size: 20px; font-weight: 600; letter-spacing: .04em; margin: 0; }
+
+main { max-width: 600px; margin: 0 auto; padding: 20px 20px 72px; }
+h2 { font-size: 18px; font-weight: 600; margin: 0 0 8px; }
+p { margin: 0 0 12px; }
+
+.warning {
+  margin: 0; padding: 2px 0 2px 12px;
+  border-left: 3px solid var(--danger);
+  color: var(--muted); font-size: 16px;
+}
+.warning strong { color: var(--danger); font-weight: 600; }
+.msg { margin: 16px 0 0; padding: 10px 12px; border-radius: 6px; border: 1px solid currentColor; }
+.msg.err { color: var(--danger); }
+
+/* 各區塊以細線分隔，不用外框 */
+section { padding: 26px 0; border-top: 1px solid var(--border); }
+#view-setup, #view-locked { border-top: 0; }
+section > :last-child { margin-bottom: 0; }
+
+/* 目前狀態：一條橫列，鎖定按鈕在右邊；往下捲動時固定在頂端，隨時可以鎖定 */
+section.status {
+  position: sticky; top: 12px; z-index: 1;
+  box-shadow: 0 0 0 1px var(--border), 0 4px 14px rgba(20,24,28,.10);
+  display: grid; grid-template-columns: 1fr auto; column-gap: 16px; align-items: center;
+  margin-top: 20px; padding: 14px 16px; border: 0; border-radius: 8px; background: var(--surface);
+}
+section.status h2 { grid-column: 1; margin: 0; font-size: 16px; }
+section.status h2::before {
+  content: ""; display: inline-block; width: 9px; height: 9px; margin-right: 8px;
+  border-radius: 50%; background: var(--ok); vertical-align: 1px;
+}
+section.status p { grid-column: 1; margin: 2px 0 0; color: var(--muted); font-size: 16px; line-height: 1.5; }
+section.status .row { grid-column: 2; grid-row: 1 / span 2; }
+section.status + section { border-top: 0; }
+
+label { display: block; margin: 0 0 14px; color: var(--muted); font-size: 16px; }
+input {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  padding: 8px 10px;
+  font: inherit;
+  font-size: 16px;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+input:hover { border-color: var(--muted); }
+input:focus { outline: 2px solid var(--focus); outline-offset: -1px; border-color: transparent; }
+
+button {
+  font: inherit;
+  font-weight: 500;
+  min-height: 36px;
+  padding: 6px 18px;
+  border-radius: 6px;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
+  cursor: pointer;
+}
+button:hover { filter: brightness(1.08); }
+button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+button:disabled { opacity: .5; cursor: wait; }
+/* 次要按鈕 */
+#lock-btn, button.secondary, .preset .row button {
+  background: var(--bg); color: var(--fg); border-color: var(--border); font-weight: 400;
+}
+.danger-btn, .preset .row button.danger-btn {
+  background: transparent; color: var(--danger); border-color: var(--danger); font-weight: 400;
+}
+.danger-btn:focus-visible { outline-color: var(--danger); }
+
+.row { display: flex; align-items: center; gap: 6px 12px; flex-wrap: wrap; }
+.note { font-size: 16px; font-weight: 500; }
+.note.ok { color: var(--ok); }
+.note.err { color: var(--danger); }
+.note.ok:not(:empty)::before { content: "✓ "; }
+.note.warn { color: var(--warn); }
+.note.err:not(:empty)::before { content: "✕ "; }
+.note.warn:not(:empty)::before { content: "! "; }
+
+.hint { color: var(--muted); font-size: 16px; margin: 0 0 14px; }
+
+/* 常用地點、常用違規：名稱與按鈕同一列，內容摘要在下面 */
+.preset-list .empty { color: var(--muted); font-size: 16px; margin: 0; }
+.preset {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; align-items: center;
+  padding: 12px 0; border-top: 1px solid var(--border);
+}
+.preset:first-child { border-top: 0; padding-top: 0; }
+.preset:last-child { padding-bottom: 0; }
+.preset input { grid-column: 1; grid-row: 1; margin: 0; }
+.preset .row { grid-column: 2; grid-row: 1; gap: 6px; flex-wrap: nowrap; }
+.preset .row button { min-height: 36px; padding: 6px 12px; }
+.preset .row .note:empty { display: none; }
+.preset .detail { grid-column: 1 / -1; color: var(--muted); font-size: 16px; margin: 0; word-break: break-all; }
+
+/* 匯出與匯入常用資料 */
+section.transfer .warning { margin: 0 0 16px; }
+section.transfer .row + .row { margin-top: 12px; }
+
+/* 清除所有資料 */
+section.danger { border-top: 2px solid var(--danger); margin-top: 8px; }
+section.danger h2 { color: var(--danger); }
+
+@media (max-width: 480px) {
+  section.status { grid-template-columns: 1fr; row-gap: 10px; }
+  section.status .row { grid-column: 1; grid-row: auto; }
+  .preset { grid-template-columns: 1fr; }
+  .preset .row { grid-column: 1; grid-row: auto; }
+}

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<title>行人的法槌 解鎖</title>
+<link rel="stylesheet" href="unlock.css">
+</head>
+<body>
+  <!--
+    檢舉頁面的解鎖視窗。由 background 以 chrome.windows.create 開啟，是擴充功能自己的頁面，
+    主密碼只在這裡輸入，不會出現在檢舉網站的頁面上。
+    不使用 <form>，避免 Chrome 把它當成登入表單。
+  -->
+  <header class="top">
+    <img class="logo" src="../icons/icon.svg" width="16" height="16" alt="">
+    <h1>解鎖檢舉頁面</h1>
+  </header>
+  <main>
+    <label for="pw">主密碼</label>
+    <input type="password" id="pw" autocomplete="off" spellcheck="false" autofocus>
+    <div class="row">
+      <button type="button" id="btn">解鎖</button>
+      <span id="note" class="note" role="status"></span>
+    </div>
+  </main>
+  <script src="unlock.js"></script>
+</body>
+</html>

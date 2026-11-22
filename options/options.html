@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>行人的法槌 設定</title>
+<link rel="stylesheet" href="options.css">
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <img class="logo" src="../icons/icon.svg" width="16" height="16" alt="">
+    <h1>行人的法槌 設定</h1>
+  </div>
+</header>
+<main>
+  <p class="warning">
+    所有資料都以主密碼加密後才存在這台電腦上。<strong>忘記主密碼無法救回</strong>，
+    只能「清除所有資料」後重新設定。
+  </p>
+
+  <!-- 與按鈕無關的錯誤（例如讀取狀態失敗）才顯示在這裡 -->
+  <p id="msg" class="msg err" role="alert" hidden></p>
+
+  <!-- 尚未設定 -->
+  <section id="view-setup" hidden>
+    <h2>設定主密碼</h2>
+    <p>第一次使用，請設定主密碼（至少 8 個字元）。</p>
+    <label>主密碼<input type="password" id="setup-pw1" autocomplete="off" spellcheck="false"></label>
+    <label>再輸入一次<input type="password" id="setup-pw2" autocomplete="off" spellcheck="false"></label>
+    <div class="row"><button type="button" id="setup-btn">設定</button><span class="note" role="status"></span></div>
+  </section>
+
+  <!-- 已設定、未解鎖 -->
+  <section id="view-locked" hidden>
+    <h2>解鎖</h2>
+    <p>每次打開設定頁都要輸入主密碼，與檢舉頁面解鎖狀態不相關。</p>
+    <label>主密碼<input type="password" id="unlock-pw" autocomplete="off" spellcheck="false"></label>
+    <div class="row"><button type="button" id="unlock-btn">解鎖</button><span class="note" role="status"></span></div>
+  </section>
+
+  <!-- 已解鎖 -->
+  <div id="view-unlocked" hidden>
+    <section class="status">
+      <h2>目前狀態：已解鎖</h2>
+      <p>只在這個分頁有效。關閉或重新整理分頁、閒置 10 分鐘、關閉瀏覽器都會鎖定。</p>
+      <div class="row"><button type="button" id="lock-btn">鎖定</button><span class="note" role="status"></span></div>
+    </section>
+
+    <section>
+      <h2>個人資料</h2>
+      <label>姓名<input type="text" id="p-name" autocomplete="off" spellcheck="false"></label>
+      <label>身分證字號<input type="text" id="p-idNumber" autocomplete="off" spellcheck="false"></label>
+      <label>電子信箱<input type="text" id="p-email" autocomplete="off" spellcheck="false" inputmode="email"></label>
+      <label>手機<input type="text" id="p-phone" autocomplete="off" spellcheck="false" inputmode="tel"></label>
+      <label>聯絡地址<input type="text" id="p-address" autocomplete="off" spellcheck="false"></label>
+      <div class="row"><button type="button" id="save-personal-btn">儲存個人資料</button><span class="note" role="status"></span></div>
+    </section>
+
+    <section>
+      <h2>常用地點</h2>
+      <p class="hint">新增請在檢舉頁面選好地址後，按面板常用地點區的「目前內容存為常用」。</p>
+      <div id="place-list" class="preset-list"></div>
+    </section>
+
+    <section>
+      <h2>常用違規</h2>
+      <p class="hint">新增請在檢舉頁面選好違規事項後，按面板常用違規區的「目前內容存為常用」。</p>
+      <div id="combo-list" class="preset-list"></div>
+    </section>
+
+    <section class="transfer">
+      <h2>匯出與匯入常用資料</h2>
+      <p class="hint">只包含常用地點與常用違規，不含個人資料與主密碼。</p>
+      <p class="warning"><strong>匯出的檔案沒有加密</strong>，任何人打開都看得到其中的常用地點與常用違規，請妥善保管。</p>
+      <div class="row"><button type="button" id="export-btn">匯出常用資料</button><span class="note" role="status"></span></div>
+      <div class="row"><button type="button" id="import-btn" class="secondary">匯入常用資料</button><span class="note" role="status"></span></div>
+      <input type="file" id="import-file" accept=".json,application/json" hidden>
+    </section>
+
+    <section>
+      <h2>修改主密碼</h2>
+      <p>修改後，檢舉頁面需要用新密碼重新解鎖。</p>
+      <label>目前的主密碼<input type="password" id="cp-old" autocomplete="off" spellcheck="false"></label>
+      <label>新主密碼（至少 8 個字元）<input type="password" id="cp-new1" autocomplete="off" spellcheck="false"></label>
+      <label>再輸入一次新主密碼<input type="password" id="cp-new2" autocomplete="off" spellcheck="false"></label>
+      <div class="row"><button type="button" id="cp-btn">修改主密碼</button><span class="note" role="status"></span></div>
+    </section>
+  </div>
+
+  <!-- 已設定時都可以清除（忘記密碼時也需要） -->
+  <section id="view-clear" class="danger" hidden>
+    <h2>清除所有資料</h2>
+    <p>刪除這台電腦上本擴充功能存的所有資料（個人資料、常用違規、常用地點、主密碼設定），無法復原。檢舉頁面也會一併鎖定。</p>
+    <div class="row"><button type="button" id="clear-btn" class="danger-btn">清除所有資料</button><span class="note" role="status"></span></div>
+  </section>
+</main>
+<script type="module" src="options.js"></script>
+</body>
+</html>
